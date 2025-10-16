@@ -4,18 +4,35 @@
 <meta charset="utf-8">
 <title>JOJO ランダム再生</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { text-align:center; font-family:sans-serif; margin-top:50px; }
+  button {
+    font-size: 24px;
+    padding: 20px 40px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  button:hover { background-color: #ffdd33; }
+</style>
 </head>
-<body style="text-align:center; font-family:sans-serif;">
-<h2>🎶 今日のJOJOプレイリストを再生中...</h2>
-<p>音楽アプリが自動で開かない場合は <a id="manualLink" href="#">こちらをタップ</a></p>
+<body>
+<h2>🎶 JOJOプレイリストを再生</h2>
+<p>下のボタンを1回タップしてください</p>
+<button id="playButton">▶ 再生する</button>
 
 <script>
 const links = [
   "https://music.apple.com/jp/playlist/jojo/pl.u-gxblgJ4FEN3GZr"
 ];
-const choice = links[Math.floor(Math.random() * links.length)];
-setTimeout(() => { window.location.href = choice; }, 800);
-document.getElementById("manualLink").href = choice;
+
+document.getElementById("playButton").addEventListener("click", () => {
+  // ランダムに1つ選択
+  const choice = links[Math.floor(Math.random() * links.length)];
+  // Apple Musicアプリで開く
+  window.location.href = choice;
+});
 </script>
 </body>
 </html>
