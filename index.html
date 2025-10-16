@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ランダム再生</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="text-align:center; font-family:sans-serif;">
+<h2>🎶 今日のおすすめを再生中...</h2>
+<p>音楽アプリが自動で開かない場合は <a id="manualLink" href="#">ここをタップ</a></p>
+
+<script>
+const links = [
+  "https://music.apple.com/jp/playlist/プレイリスト1のURL",
+  "https://music.apple.com/jp/playlist/プレイリスト2のURL",
+  "https://music.apple.com/jp/playlist/プレイリスト3のURL"
+];
+const choice = links[Math.floor(Math.random() * links.length)];
+setTimeout(() => { window.location.href = choice; }, 800);
+document.getElementById("manualLink").href = choice;
+</script>
+</body>
+</html>
