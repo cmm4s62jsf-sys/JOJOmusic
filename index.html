@@ -16,7 +16,7 @@
     html, body {
       width: 100%;
       height: 100svh;
-      overflow: hidden; /* スクロール完全禁止 */
+      overflow: hidden; /* ← スクロール禁止 */
       background: #000;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
       color: var(--text);
@@ -37,8 +37,8 @@
       z-index: -1;
     }
     .card {
-      position: fixed; /* ←ここがポイント（下固定） */
-      bottom: calc(env(safe-area-inset-bottom) + 20px);
+      position: absolute;
+      bottom: calc(env(safe-area-inset-bottom) + 24px);
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 40px);
