@@ -9,24 +9,26 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100vh;
+      height: 100%;
       overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
       color: #fff;
       background: #000;
     }
 
-    /* 背景画像を<img>で表示して全画面固定 */
+    /* 背景画像を<img>タグで直接表示（Safari対策） */
     .bg {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: brightness(0.45) blur(2px);
       z-index: -1;
+      filter: brightness(0.45) blur(2px);
     }
 
+    /* 下固定カード */
     .card {
       position: fixed;
       left: 50%;
@@ -75,8 +77,8 @@
   </style>
 </head>
 <body>
-  <!-- ✅ 背景画像を直に配置 -->
-  <img class="bg" src="https://cmm4s62jsf-sys.github.io/JOJOmusic/bg.jpg" alt="background">
+  <!-- ✅ ここで背景を直接表示 -->
+  <img src="https://cmm4s62jsf-sys.github.io/JOJOmusic/bg.jpg" class="bg" alt="background">
 
   <main class="card">
     <h1 class="title">プレイリストを選択</h1>
