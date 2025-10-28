@@ -1,116 +1,93 @@
-# Create an inline (self-contained) HTML that embeds the background image as a Base64 data URI.
-# This avoids any path or caching issues on GitHub Pages. No external image requests are needed.
-import base64, pathlib
-
-# Try to read bg.jpg (if present); fallback to the original uploaded file name as needed.
-paths = [pathlib.Path("/mnt/data/bg.jpg"), pathlib.Path("/mnt/data/IMG_2506.jpeg")]
-img_data = None
-for p in paths:
-    if p.exists():
-        img_data = p.read_bytes()
-        break
-
-if img_data is None:
-    raise FileNotFoundError("Background image not found in session.")
-
-b64 = base64.b64encode(img_data).decode("ascii")
-mime = "image/jpeg"
-
-html = f"""<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>プレイリストを選択</title>
-  <meta name="description" content="Apple Music または Spotify でプレイリストを再生します。">
   <style>
-    :root {{
-      --text: #e7eaf0;
-      --muted: #a9b1c3;
-      --card: rgba(20, 22, 30, 0.65);
-      --border: rgba(255,255,255,0.14);
-    }}
-    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    html, body {{
+    html, body {
+      margin: 0;
+      padding: 0;
       width: 100%;
-      height: 100svh;
-      height: 100dvh;
       height: 100vh;
-      overflow: hidden; /* スクロール禁止 */
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      color: #fff;
       background: #000;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
-      color: var(--text);
-      -webkit-text-size-adjust: 100%;
-    }}
-    /* ✅ 背景をBase64で直埋め（パス問題ゼロ） */
-    body::before {{
-      content: "";
-      position: fixed; inset: 0;
-      background: url("data:{mime};base64,{b64}") center / cover no-repeat;
-      filter: brightness(0.48) blur(1px);
-      z-index: -2;
-    }}
-    body::after {{
-      content: "";
-      position: fixed; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+    }
+
+    /* 背景画像を<img>で表示して全画面固定 */
+    .bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.45) blur(2px);
       z-index: -1;
-    }}
-    .card {{
+    }
+
+    .card {
       position: fixed;
       left: 50%;
       bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
       transform: translateX(-50%);
       width: calc(100% - 40px);
       max-width: 560px;
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: rgba(20,22,30,0.65);
+      border: 1px solid rgba(255,255,255,0.14);
       border-radius: 22px;
       padding: 18px 20px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       box-shadow: 0 20px 50px rgba(0,0,0,0.45);
-    }}
-    .title {{ font-size: 22px; font-weight: 800; margin-bottom: 6px; }}
-    .subtitle {{ margin-bottom: 14px; color: var(--muted); font-size: 14px; line-height: 1.6; }}
-    .btns {{ display: grid; gap: 12px; }}
-    .btn {{
+    }
+
+    .title { font-size: 22px; font-weight: bold; margin-bottom: 6px; }
+    .subtitle { margin-bottom: 14px; color: #bbb; font-size: 14px; }
+
+    .btns { display: grid; gap: 12px; }
+    .btn {
       display: grid;
       grid-template-columns: 28px 1fr auto;
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: var(--text);
+      color: #fff;
       background: rgba(0,0,0,0.35);
       border: 1px solid rgba(255,255,255,0.18);
       border-radius: 14px;
       padding: 14px 16px;
       transition: transform 0.1s ease, border-color 0.2s ease;
-      -webkit-tap-highlight-color: rgba(255,255,255,0.1);
-    }}
-    .btn:hover {{ transform: translateY(-2px); border-color: rgba(255,255,255,0.3); }}
-    .icon {{ width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); }}
-    .apple .icon {{ background: linear-gradient(145deg,#fa2d48,#ff7f66); }}
-    .spotify .icon {{ background: linear-gradient(145deg,#1db954,#66ffa0); }}
-    .badge {{ font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); background: rgba(0,0,0,0.3); }}
-    @media (max-height: 520px) {{
-      .card {{ padding: 14px 16px; }}
-      .btn {{ padding: 12px 12px; }}
-      .title {{ font-size: 20px; }}
-    }}
+    }
+    .btn:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.3); }
+
+    .icon { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); }
+    .apple .icon { background: linear-gradient(145deg,#fa2d48,#ff7f66); }
+    .spotify .icon { background: linear-gradient(145deg,#1db954,#66ffa0); }
+    .badge { font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); color: #ccc; background: rgba(0,0,0,0.3); }
+
+    @media (max-height: 520px) {
+      .card { padding: 14px 16px; }
+      .btn { padding: 12px 12px; }
+      .title { font-size: 20px; }
+    }
   </style>
 </head>
 <body>
-  <main class="card" role="main" aria-labelledby="title">
-    <h1 id="title" class="title">プレイリストを選択</h1>
+  <!-- ✅ 背景画像を直に配置 -->
+  <img class="bg" src="https://cmm4s62jsf-sys.github.io/JOJOmusic/bg.jpg" alt="background">
+
+  <main class="card">
+    <h1 class="title">プレイリストを選択</h1>
     <p class="subtitle">お好きなサービスで再生してください。</p>
     <div class="btns">
-      <a class="btn apple" href="https://music.apple.com/jp/playlist/jojo/pl.u-gxblgJ4FEN3GZr" target="_blank" rel="noopener">
+      <a class="btn apple" href="https://music.apple.com/jp/playlist/jojo/pl.u-gxblgJ4FEN3GZr" target="_blank">
         <span class="icon"></span>
         <div><span>Apple Musicで開く</span><br><small>アプリまたはブラウザで再生</small></div>
         <div class="badge">music.apple.com</div>
       </a>
-      <a class="btn spotify" href="https://spotify.link/sJTayIBePXb" target="_blank" rel="noopener">
+      <a class="btn spotify" href="https://spotify.link/sJTayIBePXb" target="_blank">
         <span class="icon"></span>
         <div><span>Spotifyで開く</span><br><small>アプリまたはブラウザで再生</small></div>
         <div class="badge">spotify.link</div>
@@ -119,10 +96,3 @@ html = f"""<!doctype html>
   </main>
 </body>
 </html>
-"""
-
-out = "/mnt/data/index_inline.html"
-with open(out, "w", encoding="utf-8") as f:
-    f.write(html)
-
-out
