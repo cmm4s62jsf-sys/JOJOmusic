@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>プレイリストを選択</title>
+  <link rel="preload" as="image" href="./bg.webp?v=4">
   <style>
     html, body {
       margin: 0;
@@ -79,8 +80,11 @@
   </style>
 </head>
 <body>
-  <!-- ✅ ここで背景を直接表示 -->
-<img src="./bg.png?v=10" class="bg" alt="background">
+  <!-- ✅ 高速読み込み＋WebP対応 -->
+  <picture>
+    <source srcset="./bg.webp?v=4" type="image/webp">
+    <img src="./bg.jpg?v=4" class="bg" alt="background" loading="lazy">
+  </picture>
 
   <main class="card">
     <h1 class="title">プレイリストを選択</h1>
